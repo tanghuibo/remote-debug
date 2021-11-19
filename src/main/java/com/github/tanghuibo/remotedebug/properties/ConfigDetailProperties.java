@@ -20,7 +20,7 @@ public class ConfigDetailProperties {
     private String name;
 
     /**
-     * 标记
+     * 标签
      */
     private String tag;
 
@@ -42,22 +42,6 @@ public class ConfigDetailProperties {
         this.type = type;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
     public String getHost() {
         return host;
     }
@@ -72,5 +56,21 @@ public class ConfigDetailProperties {
 
     public void setPort(Integer port) {
         this.port = port;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

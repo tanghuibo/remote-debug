@@ -1,5 +1,6 @@
 package com.github.tanghuibo.remotedebug.toolwindow;
 
+import com.github.tanghuibo.remotedebug.ui.MainDashboardView;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
@@ -19,7 +20,7 @@ public class MainToolWindowFactory implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        JComponent jComponent = new JButton("test");
+        JComponent jComponent = new MainDashboardView(project);
         Content content = contentFactory.createContent(jComponent, "Dashboard", false);
         toolWindow.getContentManager().addContent(content);
     }

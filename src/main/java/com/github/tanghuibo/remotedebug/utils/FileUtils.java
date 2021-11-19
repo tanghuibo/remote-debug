@@ -1,5 +1,6 @@
 package com.github.tanghuibo.remotedebug.utils;
 
+import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 
 import java.io.IOException;
@@ -13,10 +14,26 @@ import java.io.IOException;
 public class FileUtils {
 
     public static byte[] toByteArray(VirtualFile virtualFile) {
+        if(virtualFile == null) {
+            return new byte[0];
+        }
         try {
-            return virtualFile.contentsToByteArray();
+            return VfsUtil.loadBytes(virtualFile);
         } catch (IOException e) {
-            throw new RuntimeException("读取文件失败", e);
+            e.printStackTrace();
+            return new byte[0];
+        }
+    }
+
+    public static String toText(VirtualFile virtualFile) {
+        if(virtualFile == null) {
+            return "";
+        }
+        try {
+            return VfsUtil.loadText(virtualFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
         }
     }
 }
