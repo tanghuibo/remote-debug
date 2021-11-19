@@ -8,12 +8,8 @@
     <depends>com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.tanghuibo.remotedebug.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.tanghuibo.remotedebug.services.MyProjectService"/>
+        <toolWindow canCloseContents="false" anchor="bottom" id="RemoteDebug" icon="/icon/main.svg"
+                    factoryClass="com.github.tanghuibo.remotedebug.toolwindow.MainToolWindowFactory">
+        </toolWindow>
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.tanghuibo.remotedebug.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
 </idea-plugin>
