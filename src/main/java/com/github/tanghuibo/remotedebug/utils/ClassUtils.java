@@ -17,8 +17,14 @@ public class ClassUtils {
      * @return
      */
     public static String getClassName(byte[] bytes) {
-        ClassReader classReader = new ClassReader(bytes);
-        return classReader.getClassName().replace("/", ".");
+        try {
+            ClassReader classReader = new ClassReader(bytes);
+            return classReader.getClassName().replace("/", ".");
+        } catch (Exception e) {
+            NotifyUtils.error("解析 class 文件失败", e);
+            throw new RuntimeException(e);
+        }
+
     }
 
     public static String convertSimpleName(String className) {

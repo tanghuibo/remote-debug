@@ -7,7 +7,12 @@
 远程 debug 工具
 
 - 通过在项目根目录配置 `rdebug.yml` 获取机器信息快速进行 debug 配置
+
+![dashboard.gif](./screenshots/dashboard.gif)
+
 - 快速替换被 debug 机器的 class 文件
+
+
 
 <!-- Plugin description end -->
 
