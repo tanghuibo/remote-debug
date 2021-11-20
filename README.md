@@ -19,6 +19,10 @@
 
 <!-- Plugin description end -->
 
+## 下载地址
+
+[remote-debug-1.0.0.jar](https://github.com/tanghuibo/remote-debug/releases/download/1.0.0/remote-debug-1.0.0.jar)
+
 ## 插件扩展
 
 ### 自定义配置文件解析
