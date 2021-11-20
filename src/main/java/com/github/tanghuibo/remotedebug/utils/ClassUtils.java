@@ -1,7 +1,7 @@
 package com.github.tanghuibo.remotedebug.utils;
 
 import org.apache.commons.lang3.StringUtils;
-import org.objectweb.asm.ClassReader;
+import org.jetbrains.org.objectweb.asm.ClassReader;
 
 /**
  * ClassUtils

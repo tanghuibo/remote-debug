@@ -8,10 +8,11 @@
 
 - 通过在项目根目录配置 `rdebug.yml` 获取机器信息快速进行 debug 配置
 
-![dashboard.gif](./screenshots/dashboard.gif)
+![dashboard.gif](https://raw.githubusercontent.com/tanghuibo/remote-debug/main/screenshots/dashboard.gif)
 
 - 快速替换被 debug 机器的 class 文件
 
+![replace-class.gif](https://raw.githubusercontent.com/tanghuibo/remote-debug/main/screenshots/replace-class.gif)
 
 
 <!-- Plugin description end -->
