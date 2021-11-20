@@ -36,4 +36,15 @@ public class FileUtils {
             return "";
         }
     }
+
+    public static void writeText(VirtualFile virtualFile, String text) {
+        if(virtualFile == null) {
+            return;
+        }
+        try {
+            VfsUtil.saveText(virtualFile, text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

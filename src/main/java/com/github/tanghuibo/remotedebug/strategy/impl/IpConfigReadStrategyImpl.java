@@ -21,6 +21,7 @@ public class IpConfigReadStrategyImpl extends ConfigReadStrategy {
         vmInfoDto.setName(properties.getName());
         vmInfoDto.setHost(properties.getHost());
         vmInfoDto.setPort(properties.getPort());
+        vmInfoDto.setUrl(properties.getUrl());
         return vmInfoDto;
     }
 

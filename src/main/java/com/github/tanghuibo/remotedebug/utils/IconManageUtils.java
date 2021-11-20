@@ -25,6 +25,8 @@ public class IconManageUtils {
 
     public static final Icon REFRESH_ICON = IconManager.getInstance().getIcon("actions/refresh.svg", IconWrapperWithToolTip.class);
 
+    public static final Icon BROWSER = buildImageIcon("/icon/chrome.png");
+
 
     private static ImageIcon buildImageIcon(String path) {
         try {

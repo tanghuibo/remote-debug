@@ -54,7 +54,6 @@ public class VmListView extends JBList<VmListView.VmInfo>{
             return vmInfoDto;
         }
 
-
         @Override
         public String toString() {
             if(StringUtils.isEmpty(vmInfoDto.getTag())) {

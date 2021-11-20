@@ -1,0 +1,7 @@
+debug:
+  - type: ip
+    name: 本地环境
+    tag: 开发
+    ip: 127.0.0.1
+    port: 8000
+    url: "https://github.com/tanghuibo/remote-debug"

@@ -13,7 +13,9 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * MainDashboardView
@@ -22,6 +24,8 @@ import java.util.Optional;
  * @date 2021/11/19 15:30
  */
 public class MainDashboardView extends JComponent {
+
+    public static Map<Project, MainDashboardView> contentMap = new ConcurrentHashMap<>();
 
     private final Wrapper wrapper;
     private final Project project;
@@ -39,14 +43,16 @@ public class MainDashboardView extends JComponent {
         //data init
         dataInit();
         add(wrapper);
+        contentMap.put(project, this);
     }
 
-    private void dataInit() {
+    public void dataInit() {
         ApplicationManager.getApplication().runReadAction(() -> vmListView.setListData(Optional.ofNullable(ConfigUtils.read(this.project)).map(ConfigProperties::getDebug).orElse(Collections.emptyList())));
+        mainToolbarViewBuilder.onSelect(null);
     }
 
     private void setListener() {
-        vmListView.addListSelectionListener(e -> mainToolbarViewBuilder.onSelect(Optional.of(vmListView.getSelectedValue()).map(VmListView.VmInfo::getVmInfoDto).orElse(null)));
+        vmListView.addListSelectionListener(e -> mainToolbarViewBuilder.onSelect(Optional.ofNullable(vmListView.getSelectedValue()).map(VmListView.VmInfo::getVmInfoDto).orElse(null)));
     }
 
     private void addView() {
@@ -67,5 +73,9 @@ public class MainDashboardView extends JComponent {
                 wrapper.setSize(getSize());
             }
         });
+    }
+
+    public static MainDashboardView getByProject(Project project) {
+        return contentMap.get(project);
     }
 }

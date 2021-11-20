@@ -35,6 +35,11 @@ public class VmInfoDto {
      */
     private Integer port;
 
+    /**
+     * 地址
+     */
+    private String url;
+
     public Icon getIcon() {
         return icon;
     }
@@ -73,5 +78,13 @@ public class VmInfoDto {
 
     public void setPort(Integer port) {
         this.port = port;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
