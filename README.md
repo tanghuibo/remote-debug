@@ -11,6 +11,32 @@
 
 <!-- Plugin description end -->
 
+## 插件扩展
+
+### 自定义配置文件解析
+
+如果你的机器信息需要动态获取 (例如通过网络获取), 你可以自己实现 `ConfigReadStrategy`, 并将其注册到 `ConfigReader`
+
+```java
+private static List<ConfigReadStrategy> configReadStrategyList = Arrays.asList(
+        new IpConfigReadStrategyImpl()
+)
+```
+### 自定义 action
+
+![task-action.png](./screenshots/task-action.png)
+
+如果想在面变中添加 `action`, 你可以自己实现 `AbsTaskAction`, 并将其注册到 `MainToolbarViewBuilder`
+
+```java
+private List<AbsTaskAction> buildBottomAction() {
+    return Arrays.asList(new RefreshAction(), new EditAction());
+}
+
+private List<AbsTaskAction> buildTopAction() {
+    return Arrays.asList(new DebugAction(), new BrowserAction());
+}
+```
 ## 插件搭建步骤
 
 从 [intellij-platform-plugin-template](https://github.com/JetBrains/intellij-platform-plugin-template) 通过 [Use this template]() 按钮 fork 代码到自己的仓库
