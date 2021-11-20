@@ -1,5 +1,7 @@
 # remote-debug
 
+![icon.svg](https://raw.githubusercontent.com/tanghuibo/remote-debug/main/screenshots/icon.svg)
+
 ## 插件描述
 
 <!-- Plugin description -->
