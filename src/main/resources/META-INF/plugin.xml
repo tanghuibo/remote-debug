@@ -7,6 +7,12 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.java</depends>
 
+    <actions>
+        <action id="ReplaceRemoteClass" class="com.github.tanghuibo.remotedebug.action.ReplaceClassAction" text="Replace Remote Class" description="Replace remote class">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="after" relative-to-action="ReplaceInPath"/>
+        </action>
+    </actions>
+
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow canCloseContents="false" anchor="bottom" id="RemoteDebug" icon="/icon/main.svg"
                     factoryClass="com.github.tanghuibo.remotedebug.toolwindow.MainToolWindowFactory">

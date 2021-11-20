@@ -27,6 +27,8 @@ public class IconManageUtils {
 
     public static final Icon BROWSER = buildImageIcon("/icon/chrome.png");
 
+    public static final Icon REPLACE_CLASS = buildImageIcon("/icon/replace-class.png");
+
 
     private static ImageIcon buildImageIcon(String path) {
         try {

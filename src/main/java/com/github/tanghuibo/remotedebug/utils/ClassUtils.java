@@ -1,5 +1,6 @@
 package com.github.tanghuibo.remotedebug.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.objectweb.asm.ClassReader;
 
 /**
@@ -18,5 +19,13 @@ public class ClassUtils {
     public static String getClassName(byte[] bytes) {
         ClassReader classReader = new ClassReader(bytes);
         return classReader.getClassName().replace("/", ".");
+    }
+
+    public static String convertSimpleName(String className) {
+        if(StringUtils.isEmpty(className)) {
+            return "";
+        }
+        String[] split = className.split("\\.");
+        return split[split.length - 1];
     }
 }

@@ -23,6 +23,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.sun.jdi.ReferenceType;
 import com.sun.jdi.VirtualMachine;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -64,24 +65,29 @@ public class DebugUtils {
 
     public static void redefineClass(Project project, VirtualFile virtualFile) {
         byte[] bytes = FileUtils.toByteArray(virtualFile);
+        if(bytes.length == 0) {
+            NotifyUtils.error("读取 class 文件失败");
+            return;
+        }
         String className = ClassUtils.getClassName(bytes);
+        if(StringUtils.isEmpty(className)) {
+            NotifyUtils.error("解析 class 文件失败");
+            return;
+        }
 
-        DebuggerManager debuggerManager = DebuggerManager.getInstance(project);
-        if(debuggerManager instanceof DebuggerManagerImpl) {
-            Collection<DebuggerSession> sessions = ((DebuggerManagerImpl) debuggerManager).getSessions();
-            if(sessions.size() == 0) {
-                NotifyUtils.error("缺少 debug 会话，请建立会话后重试");
-                return;
+        Collection<DebuggerSession> sessions = listDebugSession(project);
+
+        if(sessions.size() == 0) {
+            NotifyUtils.error("缺少 debug 会话，请建立会话后重试");
+            return;
+        }
+
+        for (DebuggerSession session : sessions) {
+            try {
+                redefineClass(bytes, className, session);
+            } catch (Exception e) {
+                NotifyUtils.error(session.getSessionName() + ":替换 class 失败", e);
             }
-            for (DebuggerSession session : sessions) {
-                try {
-                    redefineClass(bytes, className, session);
-                } catch (Exception e) {
-                    NotifyUtils.error(session.getSessionName() + ":替换 class 失败", e);
-                }
-            }
-        } else {
-            NotifyUtils.error("获取 DebuggerManagerImpl 失败");
         }
     }
 
@@ -111,31 +117,46 @@ public class DebugUtils {
         }
     }
 
-    private static void redefineClass(byte[] bytes, String className, DebuggerSession session) {
-        VirtualMachine virtualMachine = Optional.of(session)
-                .map(DebuggerSession::getProcess)
-                .map(DebugProcessImpl::getVirtualMachineProxy)
-                .map(VirtualMachineProxyImpl::getVirtualMachine)
-                .orElse(null);
+    public static void redefineClass(byte[] bytes, String className, DebuggerSession session) {
+        try {
+            VirtualMachine virtualMachine = Optional.of(session)
+                    .map(DebuggerSession::getProcess)
+                    .map(DebugProcessImpl::getVirtualMachineProxy)
+                    .map(VirtualMachineProxyImpl::getVirtualMachine)
+                    .orElse(null);
 
-        if(!virtualMachine.canRedefineClasses()) {
-            NotifyUtils.error(session.getSessionName() + ":不允许改 class");
-            return;
+            if(!virtualMachine.canRedefineClasses()) {
+                NotifyUtils.error(session.getSessionName() + ":不允许改 class");
+                return;
+            }
+
+            Map<ReferenceType, byte[]> redefineMap = new HashMap<>(1);
+            List<ReferenceType> referenceTypes = virtualMachine.classesByName(className);
+
+            if(referenceTypes == null || referenceTypes.size() == 0) {
+                NotifyUtils.error(session.getSessionName() + ":没有 class" + className);
+                return;
+            }
+
+            for (ReferenceType referenceType : referenceTypes) {
+                redefineMap.put(referenceType, bytes);
+            }
+
+            virtualMachine.redefineClasses(redefineMap);
+            NotifyUtils.info(session.getSessionName() + ": 替换 " + ClassUtils.convertSimpleName(className) + " 成功");
+        } catch (Exception e) {
+            NotifyUtils.error(session.getSessionName() + ": 替换 class 失败", e);
         }
+    }
 
-        Map<ReferenceType, byte[]> redefineMap = new HashMap<>(1);
-        List<ReferenceType> referenceTypes = virtualMachine.classesByName(className);
+    public static Collection<DebuggerSession> listDebugSession(@Nullable Project project) {
+        DebuggerManager debuggerManager = DebuggerManager.getInstance(project);
 
-        if(referenceTypes == null || referenceTypes.size() == 0) {
-            NotifyUtils.error(session.getSessionName() + ":没有 class" + className);
-            return;
+        if(debuggerManager instanceof DebuggerManagerImpl) {
+            return ((DebuggerManagerImpl) debuggerManager).getSessions();
+        } else {
+            NotifyUtils.error("不支持 debug 类型");
         }
-
-        for (ReferenceType referenceType : referenceTypes) {
-            redefineMap.put(referenceType, bytes);
-        }
-
-        virtualMachine.redefineClasses(redefineMap);
-        NotifyUtils.info(session.getSessionName() + ":替换 class " + className + " 成功");
+        return Collections.emptyList();
     }
 }
